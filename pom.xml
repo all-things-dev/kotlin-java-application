@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<!-- Spring Boot parent configuration for centralized dependency management -->
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.4.1</version>
+
+		<relativePath />
+	</parent>
+
+	<groupId>dev.all_things.reference</groupId>
+	<artifactId>kotlin-java-application</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+
+	<!-- This module will be packaged as POM -->
+	<packaging>pom</packaging>
+
+	<name>Kotlin Java Application</name>
+	<description>Project demonstrating Kotlin and Java interoperability</description>
+
+	<!-- Project modules -->
+	<modules>
+		<module>web-app</module>
+	</modules>
+
+	<!-- Project properties -->
+	<properties>
+
+		<!-- Compiler configuration -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<!-- Java compiler configuration -->
+		<java.version>23</java.version>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+
+		<!-- Kotlin compiler configuration -->
+		<kotlin.version>2.1.0</kotlin.version>
+		<kotlin.code.style>official</kotlin.code.style>
+		<kotlin.compiler.languageVersion>2.1</kotlin.compiler.languageVersion>
+		<kotlin.compiler.apiVersion>${kotlin.compiler.languageVersion}</kotlin.compiler.apiVersion>
+		<kotlin.compiler.jvmTarget>${java.version}</kotlin.compiler.jvmTarget>
+		<kotlin.compiler.incremental>true</kotlin.compiler.incremental>
+
+	</properties>
+
+	<!-- Build and plugin configuration -->
+	<build>
+
+		<!-- Common convention for generated artifacts -->
+		<finalName>${project.artifactId}-${project.version}</finalName>
+
+		<!-- Managed plugin configuration -->
+		<pluginManagement>
+			<plugins>
+
+				<!-- Kotlin compiler plugin configuration -->
+				<plugin>
+					<groupId>org.jetbrains.kotlin</groupId>
+					<artifactId>kotlin-maven-plugin</artifactId>
+					<version>${kotlin.version}</version>
+
+					<!-- Enables automatic configuration of lifecycle phases -->
+					<extensions>true</extensions>
+
+					<executions>
+						<execution>
+							<id>compile</id>
+							<configuration>
+								<sourceDirs>
+									<sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
+									<sourceDir>${project.basedir}/src/main/java</sourceDir>
+								</sourceDirs>
+							</configuration>
+						</execution>
+						<execution>
+							<id>test-compile</id>
+							<configuration>
+								<sourceDirs>
+									<sourceDir>${project.basedir}/src/test/kotlin</sourceDir>
+									<sourceDir>${project.basedir}/src/test/java</sourceDir>
+								</sourceDirs>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+
+				<!-- Java compiler plugin configuration -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<executions>
+
+						<!-- Replacing default-compile as it is treated specially by Maven -->
+						<execution>
+							<id>default-compile</id>
+							<phase>none</phase>
+						</execution>
+
+						<!-- Replacing default-testCompile as it is treated specially by Maven -->
+						<execution>
+							<id>default-testCompile</id>
+							<phase>none</phase>
+						</execution>
+
+						<execution>
+							<id>java-compile</id>
+							<phase>compile</phase>
+							<goals>
+								<goal>compile</goal>
+							</goals>
+						</execution>
+
+						<execution>
+							<id>java-test-compile</id>
+							<phase>test-compile</phase>
+							<goals>
+								<goal>testCompile</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+			</plugins>
+		</pluginManagement>
+	</build>
+
+</project>
